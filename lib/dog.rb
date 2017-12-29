@@ -37,15 +37,11 @@ class Dog
     Dog.new(id:found[0], name:found[1], breed:found[2])
   end
 
-  # def self.find_by_name(name)
-  #   find_name_sql = <<-SQL
-  #   SELECT * FROM dogs
-  #   WHERE name = ?;
-  #   SQL
-  #   DB[:conn].execute(find_name_sql, name).collect do |row|
-  #     self.new_from_db(row)
-  #   end.first
-  # end
+  def self.find_by_name(name)
+    find_name_sql = "SELECT * FROM dogs WHERE name = ?;"
+    found = DB[:conn].execute(find_name_sql, name)[0]
+    Dog.new(id:found[0], name:found[1], breed:found[2])
+  end
 
   def self.create(name:, breed:)
     dog = Dog.new(name:name, breed:breed)
