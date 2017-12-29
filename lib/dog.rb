@@ -42,11 +42,16 @@ class Dog
   # end
 
   def save
-    save_sql = <<-SQL
-    INSERT INTO dogs IF NOT EXISTS (name, breed)
-    VALUES (?, ?)
-    SQL
-    DB[:conn].execute(save_sql, self.name, self.breed)
+    if self.id
+      self.update
+    else
+      save_sql = <<-SQL
+      INSERT INTO dogs IF NOT EXISTS (name, breed)
+      VALUES (?, ?)
+      SQL
+      DB[:conn].execute(save_sql, self.name, self.breed)
+      @id = DB[:conn].execute("SELECT last_insert_rowid() FROM dogs;")[0][0]
+    end
   end
 
 end
