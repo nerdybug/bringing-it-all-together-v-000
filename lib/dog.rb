@@ -46,7 +46,7 @@ class Dog
       self.update
     else
       save_sql = <<-SQL
-      INSERT INTO dogs IF NOT EXISTS (name, breed)
+      INSERT INTO dogs (name, breed)
       VALUES (?, ?)
       SQL
       DB[:conn].execute(save_sql, self.name, self.breed)
